@@ -1,4 +1,3 @@
-# bot.py
 import os
 import logging
 import sqlite3
@@ -11,10 +10,10 @@ from aiogram.types.message import ContentType
 from PIL import Image
 from io import BytesIO
 
-# --- CONFIGURATION: SEN BU YERGA O'Z TOKENLARINGNI JOYLASHING ---
-TELEGRAM_BOT_TOKEN = ""
-OPENAI_API_KEY = ""
-# --------------------------------------------------------------
+# --- CONFIGURATION ---
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "").strip()
+# ---------------------
 
 # logging
 logging.basicConfig(level=logging.INFO)
