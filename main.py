@@ -12,8 +12,8 @@ from PIL import Image
 from io import BytesIO
 
 # --- CONFIGURATION: SEN BU YERGA O'Z TOKENLARINGNI JOYLASHING ---
-TELEGRAM_BOT_TOKEN = " "
-OPENAI_API_KEY = " "
+TELEGRAM_BOT_TOKEN = ""
+OPENAI_API_KEY = ""
 # --------------------------------------------------------------
 
 # logging
