@@ -1,4 +1,5 @@
-aiohttp==3.8.6 
+python-telegram-bot
+aiohttp==3.8.6 --only-binary=:all: 
 requests
 openai
 pillow
