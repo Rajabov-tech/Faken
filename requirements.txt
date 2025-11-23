@@ -1,7 +1,6 @@
 aiogram==2.25.1
-python-telegram-bot
-aiohttp>=3.10.0
-requests
+aiohttp<3.9
 openai
+requests
 pillow
 pytesseract 
