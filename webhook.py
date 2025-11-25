@@ -1,28 +1,29 @@
-from flask import Flask, request
-import telegram
 import os
+from aiohttp import web
+from aiogram import Bot, Dispatcher
+from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 
-TOKEN = "YOUR_TELEGRAM_BOT_TOKEN"
-bot = telegram.Bot(token=TOKEN)
+from main import dp, bot, TELEGRAM_BOT_TOKEN  # main.py ichidagi dp ishlatiladi
 
-app = Flask(__name__)
+WEBHOOK_URL = f"https://{os.getenv('PA_USERNAME')}.pythonanywhere.com/webhook/{TELEGRAM_BOT_TOKEN}"
+WEBHOOK_PATH = f"/webhook/{TELEGRAM_BOT_TOKEN}"
 
-@app.route(f"/webhook/{TOKEN}", methods=["POST"])
-def webhook_handler():
-    update = telegram.Update.de_json(request.get_json(force=True), bot)
+async def on_startup(app):
+    await bot.set_webhook(WEBHOOK_URL)
 
-    # ====> main.py handler'larini shu yerga ulaysiz
-    # Masalan, /start bo‘lsa:
-    if update.message and update.message.text == "/start":
-        bot.sendMessage(chat_id=update.message.chat_id, text="Bot ishga tushdi!")
+async def on_shutdown(app):
+    await bot.delete_webhook()
 
-    return "OK", 200
+def main():
+    app = web.Application()
 
+    SimpleRequestHandler(dispatcher=dp, bot=bot).register(app, path=WEBHOOK_PATH)
+    setup_application(app, dp, bot=bot)
 
-@app.route("/", methods=["GET"])
-def home():
-    return "Webhook server ishlayapti!", 200
+    app.on_startup.append(on_startup)
+    app.on_shutdown.append(on_shutdown)
 
+    web.run_app(app, host="0.0.0.0", port=8000)
 
 if __name__ == "__main__":
-    app.run()
+    main()
